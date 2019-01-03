@@ -1,19 +1,17 @@
-import * as vscode from 'vscode';
+import { ExtensionContext } from 'vscode';
 
-export function activate(context: vscode.ExtensionContext) {
-	console.log(vscode.workspace.workspaceFolders);
+import NpmOnSave from './NpmOnSave';
+import NpmOnSaveController from './NpmOnSaveController';
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand(
-		'extension.helloWorld',
-		() => {
-			vscode.window.showInformationMessage('Hello World!');
-		}
-	);
+export function activate(context: ExtensionContext) {
+	console.log('Extension Run NPM on Save is active');
 
-	context.subscriptions.push(disposable);
+	const npmOnSave = new NpmOnSave();
+	const controller = new NpmOnSaveController(npmOnSave);
+
+	// Add to a list of disposables which are disposed when this extension is deactivated.
+	context.subscriptions.push(controller);
+	context.subscriptions.push(npmOnSave);
 }
 
 export function deactivate() {}

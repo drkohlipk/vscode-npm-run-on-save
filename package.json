@@ -15,14 +15,6 @@
 		"workspaceContains:**/package.json"
 	],
 	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.runNpmOnSave",
-				"title": "Run NPM on Save"
-			}
-		]
-	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",

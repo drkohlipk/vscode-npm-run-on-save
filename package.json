@@ -11,6 +11,30 @@
 	"categories": [
 		"Extension Packs"
 	],
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Run NPM on Save configuration",
+			"properties": {
+				"runNpmOnSave.packageJsonPath": {
+					"default": null,
+					"description": "Specifies the path of the package.json file where the script to run lives.",
+					"type": [
+						"null",
+						"string"
+					]
+				},
+				"runNpmOnSave.scriptToRun": {
+					"default": null,
+					"description": "Specifies the NPM script to run on save.",
+					"type": [
+						"null",
+						"string"
+					]
+				}
+			}
+		}
+	},
 	"activationEvents": [
 		"workspaceContains:**/package.json"
 	],

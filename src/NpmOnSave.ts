@@ -11,20 +11,20 @@ export default class NpmOnSave {
 		StatusBarAlignment.Left
 	);
 
-	public runScripts(): void {
-		this.sh(`cd ${workspace.rootPath} && npm run something`)
+	public runScript(packageJsonPath: string, script: string): void {
+		this.sh(`cd ${workspace.rootPath}/${packageJsonPath} && npm run ${script}`)
 			.then(obj => console.log((obj as StdObj).stdout))
 			.catch(e => console.log(e));
-		// Get the current text editor
-		// const editor = window.activeTextEditor;
-		// if (!editor) {
-		// 	this._statusBarItem.hide();
-		// 	return;
-		// }
 
-		// this._statusBarItem.text = 'Run Scripts';
-		// this._statusBarItem.tooltip = 'Click to run save scripts';
-		// this._statusBarItem.command = 'extension.runNpmOnSave';
+		const editor = window.activeTextEditor;
+		if (!editor) {
+			this._statusBarItem.hide();
+			return;
+		}
+
+		this._statusBarItem.text = 'Run Scripts';
+		this._statusBarItem.tooltip = 'Click to run save scripts';
+		this._statusBarItem.command = 'extension.runNpmOnSave';
 	}
 
 	private async sh(cmd: string): Promise<string | StdObj> {

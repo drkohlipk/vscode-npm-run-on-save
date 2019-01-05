@@ -2,15 +2,21 @@ import { Disposable, workspace } from 'vscode';
 import NpmOnSave from './NpmOnSave';
 
 export default class NpmOnSaveController {
-	private npmOnSave: NpmOnSave;
 	private disposable: Disposable;
+	private npmOnSave: NpmOnSave;
+	private packageJsonPath: string;
+	private script: string;
 
 	constructor(npmOnSave: NpmOnSave) {
 		this.npmOnSave = npmOnSave;
 
-		// subscribe to selection change and editor activation events
 		const subscriptions: Disposable[] = [];
-		workspace.onWillSaveTextDocument(this.onSaveEvent, this, subscriptions);
+		const config = workspace.getConfiguration('runNpmOnSave');
+
+		this.packageJsonPath = config.get('packageJsonPath') || '';
+		this.script = config.get('scriptToRun') || '';
+
+		workspace.onDidSaveTextDocument(this.onSaveEvent, this, subscriptions);
 
 		this.disposable = Disposable.from(...subscriptions);
 	}
@@ -20,6 +26,8 @@ export default class NpmOnSaveController {
 	}
 
 	private onSaveEvent() {
-		this.npmOnSave.runScripts();
+		if (this.packageJsonPath && this.script) {
+			this.npmOnSave.runScript(this.packageJsonPath, this.script);
+		}
 	}
 }

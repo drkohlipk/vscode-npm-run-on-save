@@ -8,11 +8,10 @@ export default class NpmOnSaveController {
 	private script: string;
 
 	constructor(npmOnSave: NpmOnSave) {
-		this.npmOnSave = npmOnSave;
-
-		const subscriptions: Disposable[] = [];
 		const config = workspace.getConfiguration('runNpmOnSave');
+		const subscriptions: Disposable[] = [];
 
+		this.npmOnSave = npmOnSave;
 		this.packageJsonPath = config.get('packageJsonPath') || '';
 		this.script = config.get('scriptToRun') || '';
 
@@ -26,7 +25,7 @@ export default class NpmOnSaveController {
 	}
 
 	private onSaveEvent() {
-		if (this.packageJsonPath && this.script) {
+		if (this.script) {
 			this.npmOnSave.runScript(this.packageJsonPath, this.script);
 		}
 	}
